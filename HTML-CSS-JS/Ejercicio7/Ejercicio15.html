@@ -1,0 +1,39 @@
+<!--15- Utilizar la función que genera el medio-árbol (ejercicio 12): crear un campo de entrada que le permita al usuario ingresar la altura del mismo. Incluir un botón que al presionarlo, 
+invoque a la función generada previamente con el valor ingresado por el usuario para que la misma muestre el medio-árbol.
+Deberá incluir validación de datos ingresados por el usuario.-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h3>Generador de Medio Árbol</h3>
+    <input type="number" id="altura" placeholder="Altura del árbol" min="1" />
+    <button onclick="dibujarArbol()">Dibujar</button>
+    <pre id="resultado"></pre>
+
+    <script>
+    function medioArbol(altura) {
+        let resultado = "";
+        for (let i = 1; i <= altura; i++) {
+            resultado += "* ".repeat(i).trim() + "\n";
+        }
+        return resultado;
+    }
+
+    function dibujarArbol() {
+        const input = document.getElementById("altura");
+        const valor = parseInt(input.value);
+        const visor = document.getElementById("resultado");
+
+        if (isNaN(valor) || valor <= 0) {
+            visor.textContent = "Por favor ingrese una altura válida (número mayor a 0).";
+        } else {
+            visor.textContent = medioArbol(valor);
+        }
+    }
+    </script>
+
+</body>
+</html>

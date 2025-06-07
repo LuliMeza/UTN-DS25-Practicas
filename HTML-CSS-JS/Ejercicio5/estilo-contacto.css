@@ -1,0 +1,193 @@
+* {
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: beige;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Contenedor principal para que el contenido no toque los bordes */
+body > header,
+body > main,
+body > footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* === CABECERA === */
+header {
+    background-image: url('fondo-cabecera.jpg'); /* Imagen de fondo para la cabecera */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border-radius: 0 0 15px 15px;
+}
+
+/* Contenedor cabecera: logo + nombre */
+.cabecera {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cabecera img {
+    height: 80px;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.cabecera h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+/* === MENÚ === */
+nav {
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 10px 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 6px;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    background-color: #ffd700;
+    color: #222;
+}
+
+/* === MAIN === */
+main {
+    margin: 40px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* Cada sección temática */
+main section {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.2s ease;
+}
+
+main section:hover {
+    transform: translateY(-5px);
+}
+
+/* === FOOTER === */
+footer {
+    background-color: #222;
+    color: #ddd;
+    text-align: center;
+    padding: 20px 15px;
+    border-radius: 15px 15px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+footer p {
+    margin-bottom: 8px;
+}
+
+footer a {
+    color: #ffd700;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+footer a:hover,
+footer a:focus {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* === FORMULARIO ===  */
+.titulo-seccion {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    border-left: 6px solid #ffd700;
+    padding-left: 12px;
+    color: #333;
+    font-weight: 700;
+}
+
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.8px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    resize: vertical; /* que textarea pueda cambiar altura */
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="tel"]:focus,
+form textarea:focus {
+    border-color: #ffd700; /* amarillo similar al menú */
+    outline: none;
+    box-shadow: 0 0 6px #ffd700aa;
+}
+
+form input[type="submit"] {
+    background-color: #ffd700;
+    color: #222;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+form input[type="submit"]:hover,
+form input[type="submit"]:focus {
+    background-color: #e6c300;
+    color: #111;
+}
+
+/* Para el espacio entre campos */
+form > * + * {
+    margin-top: 15px;
+}

@@ -1,0 +1,69 @@
+<!--Desarrollemos un portero eléctrico:
+Tendrá dos visores, de dos posiciones el piso y una posición para dpto. Los pisos van del 00 al 48. Los dptos, del 1 al 6.
+El botón llamar, muestra el mensaje de abajo. El botón borrar limpia los visores y el mensaje de abajo. 
+Si se hace referencia a un piso y/o dpto que no existe, mostrar el error en el visor de abajo.-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h3>Portero Eléctrico</h3>
+    <div>
+        <label>PISO: <span id="pisoVisor">--</span></label>
+        <label>DPTO: <span id="dptoVisor">-</span></label>
+    </div>
+
+    <div id="botonera">
+        <script>
+            for (let i = 1; i <= 9; i++) {
+                document.write(`<button onclick="presionarNumero(${i})">${i}</button>`);
+                if (i % 3 === 0) document.write("<br>");
+            }
+        </script>
+        <button onclick="presionarNumero(0)">0</button>
+        <button onclick="llamar()">Llamar</button>
+        <button onclick="borrar()">Borrar</button>
+    </div>
+
+    <p id="mensajeFinal">Llamando al piso NN, dpto NN</p>
+
+    <script>
+        let piso = "";
+        let dpto = "";
+
+        function presionarNumero(num) {
+            if (piso.length < 2) {
+                piso += num;
+            } else if (dpto.length < 1) {
+                dpto += num;
+            }
+            actualizarVisores();
+        }
+
+        function actualizarVisores() {
+            document.getElementById("pisoVisor").textContent = piso.padStart(2, "-");
+            document.getElementById("dptoVisor").textContent = dpto.padStart(1, "-");
+        }
+
+        function borrar() {
+            piso = "";
+            dpto = "";
+            actualizarVisores();
+            document.getElementById("mensajeFinal").textContent = "Llamando al piso NN, dpto NN";
+        }
+
+        function llamar() {
+            const pisoNum = parseInt(piso);
+            const dptoNum = parseInt(dpto);
+            const mensaje = document.getElementById("mensajeFinal");
+
+            if (isNaN(pisoNum) || isNaN(dptoNum) || pisoNum < 0 || pisoNum > 48 || dptoNum < 1 || dptoNum > 6) {
+                mensaje.textContent = "Error: piso o departamento inválido.";
+            } else {
+                mensaje.textContent = `Llamando al piso ${pisoNum}, dpto ${dptoNum}`;
+            }
+        }
+    </script>
+</body>
+</html>

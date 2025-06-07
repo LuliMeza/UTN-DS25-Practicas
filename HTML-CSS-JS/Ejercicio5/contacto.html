@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto - Librería El Saber</title>
+    <link rel="stylesheet" href="estilo-contacto.css">
+</head>
+<body>
+    <header>
+        <div class="cabecera">
+            <img src="logo.png" alt="Logo Librería">
+            <h1>Libreria El Saber</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="seccion-ficcion.html">Ficción</a></li>
+                <li><a href="seccion-ciencia.html">Ciencia</a></li>
+                <li><a href="seccion-historia.html">Historia</a></li>
+                <li><a href="seccion-infantil.html">Infantil</a></li>
+                <li><a href="registracion.html">Registrarse</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="seccion">
+            <h2 class="titulo-seccion">Contacto</h2>
+            <form>
+                <label for="nombre">Nombre:</label><br />
+                <input type="text" id="nombre" name="nombre" required /><br /><br />
+
+                <label for="email">Email:</label><br />
+                <input type="email" id="email" name="email" required /><br /><br />
+
+                <label for="telefono">Teléfono:</label><br />
+                <input type="tel" id="telefono" name="telefono" /><br /><br />
+
+                <label for="mensaje">Mensaje:</label><br />
+                <textarea id="mensaje" name="mensaje" rows="5" cols="40" required></textarea><br /><br />
+
+                <input type="submit" value="Enviar" />
+            </form>
+        </section>
+
+    </main>
+    <footer>
+        <p>&copy; 2025 Librería El Saber</p>
+        <p>Redes: 
+            <a href="#">Instagram</a> |
+            <a href="#">Facebook</a>
+        </p>
+        <p><a href="#">Términos y condiciones</a></p>
+    </footer>
+</body>
+</html>

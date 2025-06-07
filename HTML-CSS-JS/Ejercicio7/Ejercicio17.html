@@ -1,0 +1,68 @@
+<!--Desarrollemos un teclado en pantalla:
+Cada línea del teclado debe hacerse en un array.
+Al presionar cada tecla (botón) deberá mostrarse en el display.
+La muestra estará centralizada en una sola función.
+Debe existir un botón para borrar el display.
+Botón Backspace.
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h3>Teclado en Pantalla</h3>
+    <input type="text" id="pantalla" readonly style="width: 200px; font-size: 16px;" />
+
+    <div id="teclado"></div>
+
+    <script>
+    const filas = [
+        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+        ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+    ];
+
+    function crearTeclado() {
+        const contenedor = document.getElementById("teclado");
+        filas.forEach(fila => {
+            fila.forEach(letra => {
+                const btn = document.createElement("button");
+                btn.textContent = letra;
+                btn.onclick = () => agregar(letra);
+                contenedor.appendChild(btn);
+            });
+            contenedor.appendChild(document.createElement("br"));
+        });
+
+        const borrarBtn = document.createElement("button");
+        borrarBtn.textContent = "Borrar";
+        borrarBtn.onclick = borrarTodo;
+        contenedor.appendChild(borrarBtn);
+
+        const backspaceBtn = document.createElement("button");
+        backspaceBtn.textContent = "Backspace";
+        backspaceBtn.onclick = borrarUno;
+        contenedor.appendChild(backspaceBtn);
+    }
+
+    function agregar(letra) {
+        const pantalla = document.getElementById("pantalla");
+        pantalla.value += letra;
+    }
+
+    function borrarTodo() {
+        document.getElementById("pantalla").value = "";
+    }
+
+    function borrarUno() {
+        const pantalla = document.getElementById("pantalla");
+        pantalla.value = pantalla.value.slice(0, -1);
+    }
+
+    crearTeclado();
+    </script>
+
+
+</body>
+</html>
