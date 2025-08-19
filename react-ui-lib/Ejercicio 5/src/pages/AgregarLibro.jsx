@@ -12,6 +12,7 @@ const AgregarLibro = ({ agregarLibro }) => {
     imagen: 'libro-placeholder.jpg' // Imagen placeholder por defecto
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [imagenArchivo, setImagenArchivo] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,43 +22,57 @@ const AgregarLibro = ({ agregarLibro }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validar que todos los campos estén completos
-    if (!formData.titulo || !formData.autor || !formData.categoria || !formData.descripcion ) {
+
+    if (!formData.titulo || !formData.autor || !formData.categoria || !formData.descripcion) {
       alert('Por favor completa todos los campos');
       return;
     }
+    let imagenUrl = formData.imagen;
 
-    // Crear el objeto del nuevo libro
-    const libroNuevo = {
-      ...formData
-    };
+    if (imagenArchivo) {
+      const formDataImagen = new FormData();
+      formDataImagen.append('imagen', imagenArchivo);
 
-    // Agregar el libro al catálogo
-    agregarLibro(libroNuevo);
-    
-    // Mostrar mensaje de éxito
-    setShowSuccess(true);
-    
-    // Limpiar formulario
-    setFormData({
-      titulo: '',
-      autor: '',
-      categoria: '',
-      descripcion: '',
-      imagen: 'libro-placeholder.jpg'
-    });
+      const res = await fetch('http://localhost:3000/api/upload', {
+        method: 'POST',
+        body: formDataImagen,
+      });
 
-    // Redirigir después de 2 segundos
-    setTimeout(() => {
-      navigate('/catalogo');
-    }, 2000);
+      if (res.ok) {
+        const data = await res.json();
+        imagenUrl = data.url;
+      } else {
+        alert('Error al subir la imagen');
+        return;
+      }
+    }
+    const libroNuevo = { ...formData, imagen: imagenUrl };
+
+    try {
+      await agregarLibro(libroNuevo);
+
+      setShowSuccess(true);
+
+      setFormData({
+        titulo: '',
+        autor: '',
+        categoria: '',
+        descripcion: '',
+        imagen: 'libro-placeholder.jpg'
+      });
+      setImagenArchivo(null);
+
+      setTimeout(() => {
+        navigate('/catalogo');
+      }, 2000);
+    } catch (error) {
+      alert('Hubo un error al agregar el libro.');
+    }
   };
 
   const handleCancelar = () => {
-    // Limpiar formulario
     setFormData({
       titulo: '',
       autor: '',
@@ -65,8 +80,13 @@ const AgregarLibro = ({ agregarLibro }) => {
       descripcion: '',
       imagen: 'libro-placeholder.jpg'
     });
+    setImagenArchivo(null);
     setShowSuccess(false);
   };
+  const handleArchivoChange = (e) => {
+    setImagenArchivo(e.target.files[0]);
+  };
+  
 
   const categorias = [
     { value: '', label: 'Selecciona una categoría' },
@@ -145,7 +165,6 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-
                   {/* Descripción */}
                   <Col xs={12}>
                     <Form.Group>
@@ -162,19 +181,15 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-                  {/* Imagen (placeholder por ahora) */}
+                  {/* Imagen */}
                   <Col xs={12}>
                     <Form.Group>
                       <Form.Label>Imagen</Form.Label>
-                      <div className="text-center p-4 border rounded bg-light">
-                        <i className="bi bi-image display-4 text-muted"></i>
-                        <p className="text-muted mt-2 mb-0">
-                          Imagen placeholder seleccionada por defecto
-                        </p>
-                        <small className="text-muted">
-                          (Funcionalidad de carga de imágenes en desarrollo)
-                        </small>
-                      </div>
+                      <Form.Control
+                        type="file"
+                        accept="image/*"
+                        onChange={handleArchivoChange}
+                      />
                     </Form.Group>
                   </Col>
 

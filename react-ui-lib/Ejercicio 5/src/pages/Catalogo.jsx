@@ -21,7 +21,7 @@ const Catalogo = ({ catalogo, buscarLibros }) => {
     <Container className="py-5">
       <Row className="mb-4">
         <Col>
-          <h1 className="text-center mb-4">Catálogo Completo</h1>
+          <h1 className="text-center mb-4">Catálogo</h1>
           <p className="text-center text-muted mb-4">
             Explora nuestra colección completa de libros
           </p>

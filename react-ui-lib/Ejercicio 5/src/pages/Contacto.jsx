@@ -15,9 +15,7 @@ const Contacto = () => {
                   <i className="bi bi-envelope-fill me-3 text-primary"></i>
                   <div>
                     <strong>Email:</strong><br />
-                    <a href="mailto:LibreriaElSaber@gmail.com" className="text-decoration-none">
                       LibreriaElSaber@gmail.com
-                    </a>
                   </div>
                 </ListGroupItem>
                 
@@ -25,9 +23,7 @@ const Contacto = () => {
                   <i className="bi bi-telephone-fill me-3 text-success"></i>
                   <div>
                     <strong>Teléfono:</strong><br />
-                    
                       (0221) 156-1528
-                    
                   </div>
                 </ListGroupItem>
                 
@@ -50,7 +46,6 @@ const Contacto = () => {
                 </ListGroupItem>
               </ListGroup>
               
-             
             </Card.Body>
           </Card>
         </Col>

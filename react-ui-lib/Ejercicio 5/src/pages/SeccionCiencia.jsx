@@ -18,9 +18,6 @@ const Ciencia = ({ catalogo, buscarLibros }) => {
       <Row className="mb-4">
         <Col>
           <h2 className="text-center mb-4">Sección: Ciencia</h2>
-          <p className="text-center text-muted mb-4">
-            Descubre los misterios del universo a través de la ciencia
-          </p>
         </Col>
       </Row>
 

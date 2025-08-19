@@ -3,13 +3,16 @@ import { Container, Row, Col, Card, InputGroup, Form, Button } from 'react-boots
 
 const Ficcion = ({ catalogo, buscarLibros }) => {
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
-  
-  // Filtrar libros de ficción
+
+  // Filtrar libros de ficción y buscar localmente
   const librosFiccion = catalogo.filter(libro => libro.categoria === 'ficcion');
-  
-  // Aplicar búsqueda adicional si hay término
-  const librosFiltrados = terminoBusqueda 
-    ? buscarLibros(terminoBusqueda, 'ficcion')
+
+  const librosFiltrados = terminoBusqueda
+    ? librosFiccion.filter(libro =>
+        libro.titulo.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+        libro.autor.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+        libro.descripcion.toLowerCase().includes(terminoBusqueda.toLowerCase())
+      )
     : librosFiccion;
 
   return (
@@ -32,14 +35,15 @@ const Ficcion = ({ catalogo, buscarLibros }) => {
               placeholder="Buscar en libros de ficción..."
               value={terminoBusqueda}
               onChange={(e) => setTerminoBusqueda(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
             />
-            <Button variant="outline-secondary">
+            <Button variant="outline-secondary" onClick={() => { /* opcional */ }}>
               <i className="bi bi-search"></i>
             </Button>
           </InputGroup>
         </Col>
       </Row>
-        
+
       {/* Resultados */}
       <Row className="mb-3">
         <Col>
@@ -51,14 +55,14 @@ const Ficcion = ({ catalogo, buscarLibros }) => {
       </Row>
 
       <Row className="g-4">
-        {librosFiltrados.map((libro) => (
+        {librosFiltrados.map(libro => (
           <Col md={6} lg={4} key={libro.id}>
             <Card className="h-100 shadow-sm hover-lift">
-              <Card.Img 
-                variant="top" 
-                src={libro.imagen} 
+              <Card.Img
+                variant="top"
+                src={libro.imagen}
                 alt={libro.titulo}
-                style={{maxHeight: '700px', objectFit: 'cover'}}
+                style={{ maxHeight: '700px', objectFit: 'cover' }}
               />
               <Card.Body className="text-center d-flex flex-column">
                 <Card.Title className="h5">{libro.titulo}</Card.Title>
@@ -77,22 +81,18 @@ const Ficcion = ({ catalogo, buscarLibros }) => {
             <i className="bi bi-search display-1 text-muted"></i>
             <h3 className="mt-3">No se encontraron libros</h3>
             <p className="text-muted">
-              {terminoBusqueda 
+              {terminoBusqueda
                 ? `No hay libros de ficción que coincidan con "${terminoBusqueda}"`
-                : 'No hay libros de ficción disponibles'
-              }
+                : 'No hay libros de ficción disponibles'}
             </p>
             {terminoBusqueda && (
-              <Button 
-                variant="outline-primary" 
-                onClick={() => setTerminoBusqueda('')}
-              >
+              <Button variant="outline-primary" onClick={() => setTerminoBusqueda('')}>
                 Limpiar búsqueda
               </Button>
             )}
           </Col>
         </Row>
-      )}   
+      )}
     </Container>
   );
 };
