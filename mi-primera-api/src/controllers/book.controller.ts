@@ -39,6 +39,7 @@ export async function createBook(
    next: NextFunction
 ) {
   try {
+    console.log('Datos recibidos: ',req.body);
     const newBook = await bookService.createBook(req.body);
     res.status(201).json({
         book: newBook,

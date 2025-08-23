@@ -1,45 +1,47 @@
 import { Book, CreateBookRequest, UpdateBookRequest } from "../types/book";
-import { PrismaClient } from "@prisma/client"; // con ../generated/prisma no funcionaba;
 import prisma from "../config/prisma";
-
+import { Categoria } from "../../../src/generated/prisma";
 
 export async function getAllBooks(): Promise<Book[]> {
   const books = await prisma.book.findMany({
-    orderBy: {id: 'asc'},
+    orderBy: { id: 'asc' },
   });  
   return books;
+}
+
+export async function getBookById(id: number): Promise<Book> {
+  const book = await prisma.book.findUnique({ where: { id }});
+  if (!book) {
+    const error = new Error('Book not found');
+    (error as any).statusCode = 404;
+    throw error;
   }
-  export async function getBookById(id: number): Promise<Book> {
-    const book = await prisma.book.findUnique({ where: { id }});
-    if (!book) {
-      const error = new Error('Book not found');
-      (error as any).statusCode = 404;
-      throw error;
-    }
-    return book;
-  }
-  export async function createBook(data: CreateBookRequest): 
-  Promise<Book> {
+  return book;
+}
+
+export async function createBook(data: CreateBookRequest): Promise<Book> {
   const created = await prisma.book.create({
     data: {
-      title: data.titulo,
+      title: data.title,
       autor: data.autor,
-      categoria: data.categoria,  
+      categoria: Categoria[data.categoria as keyof typeof Categoria],
       descripcion: data.descripcion,
       imagen: data.imagen,
     },
   });
   return created;
 }
-  
+
 export async function updateBook(id: number, updateData: UpdateBookRequest): Promise<Book> {
   try {
-    const updated= await prisma.book.update({
+    const updated = await prisma.book.update({
       where: { id },
       data: {
-        ...(updateData.titulo !== undefined ? { title: updateData.titulo } : {}),
+        ...(updateData.title !== undefined ? { title: updateData.title } : {}),
         ...(updateData.autor !== undefined ? { autor: updateData.autor } : {}),
-        ...(updateData.categoria !== undefined ? { categoria: updateData.categoria } : {}),
+        ...(updateData.categoria !== undefined
+          ? { categoria: Categoria[updateData.categoria as keyof typeof Categoria] }
+          : {}),
         ...(updateData.descripcion !== undefined ? { descripcion: updateData.descripcion } : {}),
         ...(updateData.imagen !== undefined ? { imagen: updateData.imagen } : {}),
       },

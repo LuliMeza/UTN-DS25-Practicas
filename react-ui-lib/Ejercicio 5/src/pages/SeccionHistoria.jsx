@@ -3,13 +3,13 @@ import { Container, Row, Col, Card, InputGroup, Form, Button } from 'react-boots
 
 const SeccionHistoria = ({ catalogo, buscarLibros }) => {
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
-  
-  // Filtrar libros de historia
-  const librosHistoria = catalogo.filter(libro => libro.categoria === 'historia');
-  
+
+  // Filtrar libros de historia según enum de Prisma
+  const librosHistoria = catalogo.filter(libro => libro.categoria === 'HISTORIA');
+
   // Aplicar búsqueda adicional si hay término
   const librosFiltrados = terminoBusqueda 
-    ? buscarLibros(terminoBusqueda, 'historia')
+    ? buscarLibros(terminoBusqueda, 'HISTORIA')
     : librosHistoria;
 
   return (
@@ -32,14 +32,15 @@ const SeccionHistoria = ({ catalogo, buscarLibros }) => {
               placeholder="Buscar en libros de historia..."
               value={terminoBusqueda}
               onChange={(e) => setTerminoBusqueda(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
             />
-            <Button variant="outline-secondary">
+            <Button variant="outline-secondary" onClick={() => { /* opcional */ }}>
               <i className="bi bi-search"></i>
             </Button>
           </InputGroup>
         </Col>
       </Row>
-        
+
       {/* Resultados */}
       <Row className="mb-3">
         <Col>
@@ -50,15 +51,16 @@ const SeccionHistoria = ({ catalogo, buscarLibros }) => {
         </Col>
       </Row>
 
+      {/* Grid de libros */}
       <Row className="g-4">
         {librosFiltrados.map((libro) => (
           <Col md={6} lg={4} key={libro.id}>
             <Card className="h-100 shadow-sm hover-lift">
               <Card.Img 
                 variant="top" 
-                src={libro.imagen} 
+                src={`http://localhost:3000${libro.imagen}`} // URL completa del backend
                 alt={libro.titulo}
-                style={{maxHeight: '700px', objectFit: 'cover'}}
+                style={{ maxHeight: '400px', objectFit: 'cover' }}
               />
               <Card.Body className="text-center d-flex flex-column">
                 <Card.Title className="h5">{libro.titulo}</Card.Title>
@@ -79,8 +81,7 @@ const SeccionHistoria = ({ catalogo, buscarLibros }) => {
             <p className="text-muted">
               {terminoBusqueda 
                 ? `No hay libros de historia que coincidan con "${terminoBusqueda}"`
-                : 'No hay libros de historia disponibles'
-              }
+                : 'No hay libros de historia disponibles'}
             </p>
             {terminoBusqueda && (
               <Button 

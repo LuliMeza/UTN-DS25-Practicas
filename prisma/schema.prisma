@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -10,18 +9,18 @@ datasource db {
 }
 
 model Book {
-  id Int @id @default(autoincrement())
-  title String
-  autor String
-  categoria Categoria
+  id          Int       @id @default(autoincrement())
+  title       String
+  autor       String
+  categoria   Categoria
   descripcion String
-  imagen String
-  createdAt DateTime @default(now())
+  imagen      String
+  createdAt   DateTime  @default(now())
 }
 
 enum Categoria {
-  Ficcion
-  Ciencia
-  Historia 
-  Infancia
+  FICCION
+  CIENCIA
+  HISTORIA
+  INFANTIL
 }

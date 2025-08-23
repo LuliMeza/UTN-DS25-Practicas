@@ -9,67 +9,26 @@ const AgregarLibro = ({ agregarLibro }) => {
     autor: '',
     categoria: '',
     descripcion: '',
-    imagen: 'libro-placeholder.jpg' // Imagen placeholder por defecto
+    imagen: 'libro-placeholder.jpg' // placeholder por defecto
   });
-  const [showSuccess, setShowSuccess] = useState(false);
   const [imagenArchivo, setImagenArchivo] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const categorias = [
+    { value: '', label: 'Selecciona una categoría' },
+    { value: 'FICCION', label: 'Ficción' },
+    { value: 'HISTORIA', label: 'Historia' },
+    { value: 'INFANTIL', label: 'Infantil' },
+    { value: 'CIENCIA', label: 'Ciencia' }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.titulo || !formData.autor || !formData.categoria || !formData.descripcion) {
-      alert('Por favor completa todos los campos');
-      return;
-    }
-    let imagenUrl = formData.imagen;
-
-    if (imagenArchivo) {
-      const formDataImagen = new FormData();
-      formDataImagen.append('imagen', imagenArchivo);
-
-      const res = await fetch('http://localhost:3000/api/upload', {
-        method: 'POST',
-        body: formDataImagen,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        imagenUrl = data.url;
-      } else {
-        alert('Error al subir la imagen');
-        return;
-      }
-    }
-    const libroNuevo = { ...formData, imagen: imagenUrl };
-
-    try {
-      await agregarLibro(libroNuevo);
-
-      setShowSuccess(true);
-
-      setFormData({
-        titulo: '',
-        autor: '',
-        categoria: '',
-        descripcion: '',
-        imagen: 'libro-placeholder.jpg'
-      });
-      setImagenArchivo(null);
-
-      setTimeout(() => {
-        navigate('/catalogo');
-      }, 2000);
-    } catch (error) {
-      alert('Hubo un error al agregar el libro.');
-    }
+  const handleArchivoChange = (e) => {
+    setImagenArchivo(e.target.files[0]);
   };
 
   const handleCancelar = () => {
@@ -83,18 +42,61 @@ const AgregarLibro = ({ agregarLibro }) => {
     setImagenArchivo(null);
     setShowSuccess(false);
   };
-  const handleArchivoChange = (e) => {
-    setImagenArchivo(e.target.files[0]);
-  };
-  
 
-  const categorias = [
-    { value: '', label: 'Selecciona una categoría' },
-    { value: 'ciencia', label: 'Ciencia' },
-    { value: 'ficcion', label: 'Ficción' },
-    { value: 'historia', label: 'Historia' },
-    { value: 'infantil', label: 'Infantil' }
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.titulo || !formData.autor || !formData.categoria || !formData.descripcion) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    let imagenUrl = formData.imagen;
+
+    if (imagenArchivo) {
+      const formDataImagen = new FormData();
+      formDataImagen.append('imagen', imagenArchivo);
+
+      const res = await fetch('http://localhost:3000/api/upload', {
+        method: 'POST',
+        body: formDataImagen,
+      });
+
+      if (!res.ok) return alert('No se pudo subir la imagen');
+
+      const data = await res.json();
+      imagenUrl = data.url;
+    }
+
+    // Mapear correctamente los campos para Prisma
+    const libroNuevo = {
+      title: formData.titulo,           
+      autor: formData.autor,
+      categoria: formData.categoria.toUpperCase(), 
+      descripcion: formData.descripcion,
+      imagen: imagenUrl
+    };
+
+    try {
+      const res = await fetch('http://localhost:3000/api/books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(libroNuevo)
+      });
+
+      if (!res.ok) throw new Error('Error al crear libro');
+
+      setShowSuccess(true);
+      setFormData({ titulo: '', autor: '', categoria: '', descripcion: '', imagen: 'libro-placeholder.jpg' });
+      setImagenArchivo(null);
+
+      setTimeout(() => navigate('/catalogo'), 2000);
+    } catch (error) {
+      alert('No se pudo agregar el libro, intenta de nuevo.');
+      console.error(error);
+    }
+  };
+
 
   return (
     <Container className="py-5">
@@ -116,7 +118,6 @@ const AgregarLibro = ({ agregarLibro }) => {
 
               <Form onSubmit={handleSubmit}>
                 <Row className="g-3">
-                  {/* Título */}
                   <Col xs={12}>
                     <Form.Group>
                       <Form.Label>Título del libro *</Form.Label>
@@ -131,7 +132,6 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-                  {/* Autor */}
                   <Col xs={12}>
                     <Form.Group>
                       <Form.Label>Autor *</Form.Label>
@@ -146,7 +146,6 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-                  {/* Categoría */}
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label>Categoría *</Form.Label>
@@ -165,7 +164,6 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-                  {/* Descripción */}
                   <Col xs={12}>
                     <Form.Group>
                       <Form.Label>Descripción *</Form.Label>
@@ -181,7 +179,6 @@ const AgregarLibro = ({ agregarLibro }) => {
                     </Form.Group>
                   </Col>
 
-                  {/* Imagen */}
                   <Col xs={12}>
                     <Form.Group>
                       <Form.Label>Imagen</Form.Label>
@@ -190,26 +187,23 @@ const AgregarLibro = ({ agregarLibro }) => {
                         accept="image/*"
                         onChange={handleArchivoChange}
                       />
+                      {imagenArchivo && (
+                        <img
+                          src={URL.createObjectURL(imagenArchivo)}
+                          alt="Preview"
+                          className="img-fluid rounded my-3"
+                          style={{ maxHeight: "200px" }}
+                        />
+                      )}
                     </Form.Group>
                   </Col>
 
-                  {/* Botones */}
                   <Col xs={12} className="d-flex gap-3 justify-content-center">
-                    <Button 
-                      type="submit" 
-                      variant="primary" 
-                      size="lg"
-                      disabled={showSuccess}
-                    >
+                    <Button type="submit" variant="primary" size="lg" disabled={showSuccess}>
                       <i className="bi bi-plus-circle me-2"></i>
                       Agregar Libro
                     </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline-secondary" 
-                      size="lg"
-                      onClick={handleCancelar}
-                    >
+                    <Button type="button" variant="outline-secondary" size="lg" onClick={handleCancelar}>
                       <i className="bi bi-arrow-left me-2"></i>
                       Cancelar
                     </Button>

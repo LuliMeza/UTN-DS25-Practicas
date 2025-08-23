@@ -1,26 +1,27 @@
+import { Categoria } from '../../../src/generated/prisma/index';
+
 export interface Book {
     id: number;          
-    titulo: string;
+    title: string;
     autor: string;
-    categoria: string;
+    categoria: Categoria;
     descripcion: string;
     imagen: string;
-    createdAt?: Date | undefined;
+    createdAt?: Date;
 }
 
-export interface CreateBookRequest {
-    id: number;          
-    titulo: string;
+export interface CreateBookRequest {       
+    title: string;
     autor: string;
-    categoria: string;
+    categoria: Categoria;
     descripcion: string;
     imagen: string;
 }
 
 export interface UpdateBookRequest {        
-    titulo?: string;
+    title?: string;
     autor?: string;
-    categoria?: string;
+    categoria?: Categoria;
     descripcion?: string;
     imagen?: string;
 }

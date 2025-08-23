@@ -3,15 +3,12 @@ import { Container, Row, Col, Card, InputGroup, Form, Button } from 'react-boots
 
 const Ciencia = ({ catalogo, buscarLibros }) => {
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
-  
-  // Filtrar libros de ciencia
-  const librosCiencia = catalogo.filter(libro => libro.categoria === 'ciencia');
-  
-  // Aplicar búsqueda adicional si hay término
-  const librosFiltrados = terminoBusqueda 
-    ? buscarLibros(terminoBusqueda, 'ciencia')
-    : librosCiencia;
 
+  const librosCiencia = catalogo.filter(libro => libro.categoria === 'CIENCIA');
+
+  const librosFiltrados = terminoBusqueda 
+    ? buscarLibros(terminoBusqueda, 'CIENCIA')
+    : librosCiencia;
 
   return (
     <Container className="py-5">
@@ -33,8 +30,9 @@ const Ciencia = ({ catalogo, buscarLibros }) => {
               placeholder="Buscar en libros de ciencia..."
               value={terminoBusqueda}
               onChange={(e) => setTerminoBusqueda(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
             />
-            <Button variant="outline-secondary">
+            <Button variant="outline-secondary" onClick={() => { /* opcional */ }}>
               <i className="bi bi-search"></i>
             </Button>
           </InputGroup>
@@ -51,15 +49,16 @@ const Ciencia = ({ catalogo, buscarLibros }) => {
         </Col>
       </Row>
 
+      {/* Grid de libros */}
       <Row className="g-4">
         {librosFiltrados.map((libro) => (
           <Col md={6} lg={4} key={libro.id}>
             <Card className="h-100 shadow-sm hover-lift">
               <Card.Img 
                 variant="top" 
-                src={libro.imagen} 
+                src={`http://localhost:3000${libro.imagen}`} // URL completa del backend
                 alt={libro.titulo}
-                style={{maxHeight: '700px', objectFit: 'cover'}}
+                style={{ maxHeight: '400px', objectFit: 'cover' }}
               />
               <Card.Body className="text-center d-flex flex-column">
                 <Card.Title className="h5">{libro.titulo}</Card.Title>

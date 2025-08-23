@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, InputGroup, Form, Button } from 'react-bootstrap';
 
-const Ficcion = ({ catalogo, buscarLibros }) => {
+const Ficcion = ({ catalogo }) => {
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
-  // Filtrar libros de ficción y buscar localmente
-  const librosFiccion = catalogo.filter(libro => libro.categoria === 'ficcion');
+  // Filtrar libros de ficción según enum de Prisma
+  const librosFiccion = catalogo.filter(libro => libro.categoria === 'FICCION');
 
+  // Filtrar según búsqueda
   const librosFiltrados = terminoBusqueda
     ? librosFiccion.filter(libro =>
         libro.titulo.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
@@ -54,15 +55,16 @@ const Ficcion = ({ catalogo, buscarLibros }) => {
         </Col>
       </Row>
 
+      {/* Grid de libros */}
       <Row className="g-4">
         {librosFiltrados.map(libro => (
           <Col md={6} lg={4} key={libro.id}>
             <Card className="h-100 shadow-sm hover-lift">
               <Card.Img
                 variant="top"
-                src={libro.imagen}
+                src={`http://localhost:3000${libro.imagen}`} // URL completa del backend
                 alt={libro.titulo}
-                style={{ maxHeight: '700px', objectFit: 'cover' }}
+                style={{ maxHeight: '400px', objectFit: 'cover' }}
               />
               <Card.Body className="text-center d-flex flex-column">
                 <Card.Title className="h5">{libro.titulo}</Card.Title>

@@ -10,12 +10,11 @@ const Catalogo = ({ catalogo, buscarLibros }) => {
 
   const categorias = [
     { value: '', label: 'Todas las categorías' },
-    { value: 'ciencia', label: 'Ciencia' },
-    { value: 'ficcion', label: 'Ficción' },
-    { value: 'historia', label: 'Historia' },
-    { value: 'infantil', label: 'Infantil' }
+    { value: 'FICCION', label: 'Ficción' },
+    { value: 'HISTORIA', label: 'Historia' },
+    { value: 'INFANTIL', label: 'Infantil' },
+    { value: 'CIENCIA', label: 'Ciencia' }
   ];
-
 
   return (
     <Container className="py-5">
@@ -75,7 +74,7 @@ const Catalogo = ({ catalogo, buscarLibros }) => {
             <Card className="h-100 shadow-sm hover-lift">
               <Card.Img
                 variant="top"
-                src={libro.imagen}
+                src={`http://localhost:3000${libro.imagen}`} // URL completa del backend
                 alt={libro.titulo}
                 style={{ maxHeight: '400px', objectFit: 'cover' }}
               />
@@ -83,13 +82,14 @@ const Catalogo = ({ catalogo, buscarLibros }) => {
                 <div className="mb-2">
                   <Badge 
                     bg={
-                      libro.categoria === 'ciencia' ? 'primary' :
-                      libro.categoria === 'ficcion' ? 'success' :
-                      libro.categoria === 'historia' ? 'warning' : 'info'
+                      libro.categoria === 'CIENCIA' ? 'primary' :
+                      libro.categoria === 'FICCION' ? 'success' :
+                      libro.categoria === 'HISTORIA' ? 'warning' :
+                      libro.categoria === 'INFANTIL' ? 'info' : 'secondary'
                     }
                     className="mb-2"
                   >
-                    {libro.categoria.charAt(0).toUpperCase() + libro.categoria.slice(1)}
+                    {libro.categoria.charAt(0) + libro.categoria.slice(1).toLowerCase()}
                   </Badge>
                 </div>
                 <Card.Title className="h6 mb-2">{libro.titulo}</Card.Title>
