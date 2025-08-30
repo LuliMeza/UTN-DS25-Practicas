@@ -5,6 +5,7 @@ import { bookRoutes } from './routes/book.routes';
 import  uploadRoutes  from './routes/upload.routes';
 import { handleError } from './middlewares/error.middleware';
 import path from 'path';
+import registroRouter from './routes/registro.routes';
 
 const app = express();
 const PORT = 3000;
@@ -17,9 +18,9 @@ app.use(logRequest);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Rutas
+app.use('/api',registroRouter );
 app.use('/api/books', bookRoutes);
 app.use('/api/upload', uploadRoutes);
-
 app.use(handleError);
 
 app.listen(PORT, () => {

@@ -1,6 +1,6 @@
 import { Book, CreateBookRequest, UpdateBookRequest } from "../types/book";
 import prisma from "../config/prisma";
-import { Categoria } from "../../../src/generated/prisma";
+import { Categoria } from "../../generated/prisma";
 
 export async function getAllBooks(): Promise<Book[]> {
   const books = await prisma.book.findMany({
@@ -24,7 +24,7 @@ export async function createBook(data: CreateBookRequest): Promise<Book> {
     data: {
       title: data.title,
       autor: data.autor,
-      categoria: Categoria[data.categoria as keyof typeof Categoria],
+      categoria: data.categoria as "INFANTIL" | "FICCION" | "HISTORIA" | "CIENCIA",
       descripcion: data.descripcion,
       imagen: data.imagen,
     },
