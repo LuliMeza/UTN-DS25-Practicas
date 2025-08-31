@@ -1,6 +1,6 @@
 import { Book, CreateBookRequest, UpdateBookRequest } from "../types/book";
 import prisma from "../config/prisma";
-import { Categoria } from "../../generated/prisma";
+import { Categoria } from "../generated/prisma";
 
 export async function getAllBooks(): Promise<Book[]> {
   const books = await prisma.book.findMany({

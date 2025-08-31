@@ -1,4 +1,4 @@
-import { Categoria } from '../../generated/prisma/index';
+import { Categoria } from '../generated/prisma/index';
 
 export interface Book {
     id: number;          

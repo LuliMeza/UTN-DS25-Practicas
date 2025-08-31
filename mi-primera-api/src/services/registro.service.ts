@@ -2,8 +2,8 @@ import prisma from '../config/prisma';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { RegistroRequest, RegistroResponse, LoginRequest, LoginResponse  } from '../types/registro';
-import { Sexo } from '../../generated/prisma';
-import { Categoria } from '../../generated/prisma';
+import { Sexo } from '../generated/prisma';
+import { Categoria } from '../generated/prisma';
 
 const SALT_ROUNDS = 10;
 const JWT_SECRET: string = 'mi_secreto';
